@@ -26,7 +26,7 @@ pipeline {
             }
         }
 
-        stage('Verify Package.json Exists') {
+    stage('Verify Package.json Exists') {
             steps {
                 script {
                     sh 'ls -la /var/jenkins_home/workspace/peline-nodejs-app_feature-branch@2'
@@ -34,7 +34,7 @@ pipeline {
             }
         }
 
-        stage('Install Dependencies') {
+    stage('Install Dependencies') {
             steps {
                 script {
                     sh 'npm install --no-audit'
@@ -42,7 +42,7 @@ pipeline {
             }
         }
 
-        stage('Security Checks') {
+    stage('Security Checks') {
             parallel {
                 stage('Dependency Check (OWASP 10)') {
                     steps {
@@ -54,7 +54,7 @@ pipeline {
                     }
                 }
 
-                stage('NPM Audit (Critical)') {
+    stage('NPM Audit (Critical)') {
                     options {
                         timestamps()
                     }
@@ -67,7 +67,7 @@ pipeline {
             }
         }
 
-        stage('Generate Test Coverage') {
+    stage('Generate Test Coverage') {
             steps {
                 script {
                     catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
@@ -78,7 +78,7 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
+    stage('Build Docker Image') {
             steps {
                 script {
                     sh 'printenv'
@@ -87,7 +87,7 @@ pipeline {
             }
         }
 
-        stage('Push Image') {
+    stage('Push Image') {
             steps {
                 script {
                     withDockerRegistry(credentialsId: 'dockerhub-credentials', url: 'https://index.docker.io/v1/') {
@@ -98,7 +98,7 @@ pipeline {
             }
         }
 
-        stage('Deploy Solar System Container') {
+    stage('Deploy Solar System Container') {
                     when {
                         branch 'feature-branch'
                     }
@@ -132,7 +132,7 @@ pipeline {
                     }
                 }
         
-        stage('Run EC2 Integration Script') {
+    stage('Run EC2 Integration Script') {
             when {
                 branch 'feature-branch'  // Trigger only when the branch is 'feature-branch'
             }
@@ -146,7 +146,7 @@ pipeline {
             }
         }
     
-        stage('Update Image Tag') {
+    stage('Update Image Tag') {
             when {
                 branch 'PR*'  // Runs only on the 'feature' branch
             }
